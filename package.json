@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "loc": "nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "ok": "nuxt generate"
   },
   "dependencies": {
     "bootstrap": "^4.6.0",

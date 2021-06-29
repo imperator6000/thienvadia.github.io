@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <a href="/">Back <i class="fa fa-reply"></i> </a>
+      </div>
+    </div>
     <div v-for="article in articles" :key="article.uuid" v-html="article.content_html"></div>
   </div>
 </template>
@@ -20,6 +25,7 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="sass" scoped>
+img
+  width: 100%
 </style>

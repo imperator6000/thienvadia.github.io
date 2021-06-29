@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[6],{269:function(e,n,t){"use strict";t.r(n);var c={},r=t(58),component=Object(r.a)(c,(function(){var e=this,n=e.$createElement;return(e._self._c||n)("div",[e._v("\n  Bai viet\n")])}),[],!1,null,"10e658da",null);n.default=component.exports}}]);

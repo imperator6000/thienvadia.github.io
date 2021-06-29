@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col-12">
-        <a href="/">Back <i class="fa fa-reply"></i> </a>
+        <router-link to="/">Back</router-link>
       </div>
     </div>
     <div v-for="article in articles" :key="article.uuid" v-html="article.content_html"></div>

@@ -2,6 +2,7 @@
   <b-container>
     <b-row>
       <b-col class="col-12">
+        <router-link to="/images">All Images</router-link>
         <nuxt-link class="link-in-newline" v-for="link in links" :key="link" :to="correctLink(link)">{{ link }}</nuxt-link>
       </b-col>
     </b-row>

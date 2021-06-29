@@ -25,7 +25,10 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-img
+<style lang="sass">
+img, .bbImage
   width: 100%
+
+.smilie
+  width: inherit
 </style>

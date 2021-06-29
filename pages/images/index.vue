@@ -7,7 +7,7 @@
             <img :src="image.url"/>
           </a>
         </div>
-        <a class="btn btn-success" href="javascript:;" @click="nextPage">Load more</a>
+        <a class="btn btn-success" href="javascript:;" @click="nextPage">{{ loadMoreText }}</a>
       </div>
     </div>
   </div>
@@ -22,7 +22,8 @@ export default {
       allimages: [],
       images: [],
       offset: 0,
-      perPage: 25
+      perPage: 25,
+      loadMoreText: 'Load more'
     }
   },
   created() {
@@ -34,6 +35,7 @@ export default {
       let ids = new Set(this.images.map(d => d.url))
       this.allimages = this.allimages.filter(d => !ids.has(d.url))
       this.images = [...this.images, ...this.allimages.slice(0, 25)];
+      this.loadMoreText = `Load more (${this.images.length}/${xdata.length})`
       this.$nextTick(() => {
         $('#mygallery').justifiedGallery({
           rowHeight : 300,

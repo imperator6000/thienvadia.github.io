@@ -2,8 +2,11 @@
   <b-container>
     <b-row>
       <b-col class="col-12">
-        <router-link to="/images">All Images</router-link>
-        <nuxt-link class="link-in-newline" v-for="link in links" :key="link" :to="correctLink(link)">{{ link }}</nuxt-link>
+        <router-link class="btn btn-primary mt-1 mr-1" to="/images">All Images</router-link>
+        <router-link class="btn btn-success mt-1 mr-1"
+                   v-for="fileName in fileNames"
+                   :key="fileName"
+                   :to="{path: '/bai-viet', query: { fileName }}">{{ fileName }}</router-link>
       </b-col>
     </b-row>
   </b-container>
@@ -13,7 +16,7 @@
 export default {
   data () {
     return {
-      links: []
+      fileNames: []
     }
   },
   created() {
@@ -22,11 +25,8 @@ export default {
   methods: {
     importAll(r) {
       r.keys().forEach(key => {
-        this.links.push(key.substring(2, key.lastIndexOf('.json')))
+        this.fileNames.push(key.substring(2, key.lastIndexOf('.json')))
       });
-    },
-    correctLink (path) {
-      return `/bai-viet/${path}`;
     },
   }
 }

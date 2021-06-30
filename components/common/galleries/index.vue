@@ -6,7 +6,8 @@
           <img :src="image"/>
         </a>
       </div>
-      <infinite-loading @infinite="infiniteHandler"></infinite-loading>
+      <span v-if="msg !== ''" class="alert alert-info">{{msg}}</span>
+      <infinite-loading v-if="!isFirst" @infinite="infiniteHandler"></infinite-loading>
     </div>
   </div>
 </template>
@@ -36,14 +37,23 @@ export default {
     return {
       allImages: [],
       goalImages: [],
+      isLoading: true,
+      isFirst: true,
+      msg: ''
     }
   },
   created() {
     this.allImages = this.shuffle(this.images)
-    this.nextPage()
+    this.nextPage(() => {
+      this.isFirst = false
+    })
   },
   methods: {
     infiniteHandler ($state) {
+      if (this.isFirst) {
+        return
+      }
+      console.log(`${this.goalImages.length} / ${this.images.length}`)
       this.nextPage(() => {
         if (this.allImages.length === 0) {
           $state.complete()
@@ -56,6 +66,7 @@ export default {
       let ids = new Set(this.goalImages)
       this.allImages = this.allImages.filter(imgSrc => !ids.has(imgSrc))
       this.goalImages = [...this.goalImages, ...this.allImages.slice(0, this.perPage)];
+      this.msg = `${this.goalImages.length} / ${this.images.length}`;
       this.$nextTick(() => {
         $('#mygallery').justifiedGallery({
           rowHeight : 300,

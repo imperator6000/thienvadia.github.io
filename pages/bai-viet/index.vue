@@ -30,26 +30,30 @@ export default {
   },
   created() {
     this.fileName = this.$route.query.fileName || ''
-  },
-  mounted() {
     this.articles = require(`./data/${this.fileName}.json`)
-    let setImgs = new Set()
-    this.articles.forEach(item => {
-      try {
-        let imgs = $(item.content_html).find('img')
-        imgs.each((idx, elem) => {
-          let m;
-          if ((m = this.regex.exec(elem.src)) !== null) {
-            setImgs.add(m[0])
-          }
-        })
-      } catch (ignore) {}
-      finally {
-        this.allImages = Array.from(setImgs)
-      }
+    this.getAllImages(this.articles)
+    .then(images => {
+      this.allImages = images
     })
   },
   methods: {
+    getAllImages(articles) {
+      return new Promise(resolve => {
+        let setImgs = new Set()
+        articles.forEach(item => {
+          try {
+            let imgs = $(item.content_html).find('img')
+            imgs.each((idx, elem) => {
+              let m;
+              if ((m = this.regex.exec(elem.src)) !== null) {
+                setImgs.add(m[0])
+              }
+            })
+          } catch (ignore) {}
+        })
+        resolve(Array.from(setImgs))
+      })
+    },
     showImages () {
       this.isShowImages = !this.isShowImages
     }

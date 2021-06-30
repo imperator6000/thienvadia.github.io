@@ -33,7 +33,7 @@ export default {
   },
   mounted() {
     this.articles = require(`./data/${this.fileName}.json`)
-    let setImgs = new Set(tmpImages)
+    let setImgs = new Set()
     this.articles.forEach(item => {
       try {
         let imgs = $(item.content_html).find('img')

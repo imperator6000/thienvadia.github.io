@@ -17,7 +17,9 @@
     "core-js": "^3.15.1",
     "jquery": "^3.6.0",
     "justifiedGallery": "^3.8.1",
-    "nuxt": "^2.15.7"
+    "nuxt": "^2.15.7",
+    "vue-infinite-loading": "^2.4.5",
+    "vue-infinite-scroll": "^2.0.2"
   },
   "devDependencies": {
     "@nuxt/types": "^2.15.7",

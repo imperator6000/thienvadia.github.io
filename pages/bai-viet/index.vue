@@ -6,7 +6,7 @@
     <a v-else class="btn btn-primary" href="javascript:;" @click="showImages">Show Content</a>
 
     <div v-if="!isShowImages" v-for="article in articles" :key="article.uuid" v-html="article.content_html"></div>
-    <galleries v-else :images="allImages"></galleries>
+    <galleries v-else ref="myXGalleries" v-bind:images="allImages"></galleries>
   </div>
 </template>
 
@@ -31,10 +31,6 @@ export default {
   created() {
     this.fileName = this.$route.query.fileName || ''
     this.articles = require(`./data/${this.fileName}.json`)
-    this.getAllImages(this.articles)
-    .then(images => {
-      this.allImages = images
-    })
   },
   methods: {
     getAllImages(articles) {
@@ -42,13 +38,10 @@ export default {
         let setImgs = new Set()
         articles.forEach(item => {
           try {
-            let imgs = $(item.content_html).find('img')
-            imgs.each((idx, elem) => {
-              let m;
-              if ((m = this.regex.exec(elem.src)) !== null) {
-                setImgs.add(m[0])
-              }
-            })
+            let m;
+            while ((m = this.regex.exec(item.content_html)) !== null) {
+              setImgs.add(m[0])
+            }
           } catch (ignore) {}
         })
         resolve(Array.from(setImgs))
@@ -56,6 +49,15 @@ export default {
     },
     showImages () {
       this.isShowImages = !this.isShowImages
+      if (this.isShowImages) {
+        this.getAllImages(this.articles)
+          .then(images => {
+            this.allImages = images
+            this.$refs.myXGalleries.reset(this.allImages)
+          })
+      } else {
+        this.allImages = []
+      }
     }
   }
 }

@@ -7,7 +7,7 @@
         </a>
       </div>
       <span v-if="msg !== ''" class="alert alert-info">{{msg}}</span>
-      <infinite-loading v-if="!isFirst" @infinite="infiniteHandler"></infinite-loading>
+      <infinite-loading ref="infiniteLoading" v-if="!isFirst" @infinite="infiniteHandler"></infinite-loading>
     </div>
   </div>
 </template>
@@ -35,6 +35,7 @@ export default {
   },
   data () {
     return {
+      ximages: [],
       allImages: [],
       goalImages: [],
       isLoading: true,
@@ -42,18 +43,29 @@ export default {
       msg: ''
     }
   },
-  created() {
-    this.allImages = this.shuffle(this.images)
-    this.nextPage(() => {
-      this.isFirst = false
-    })
+  mounted() {
+    this.init(this.images)
   },
   methods: {
+    reset (imgs) {
+      this.init(imgs)
+    },
+    init(imgs) {
+      this.ximages = imgs;
+      this.allImages = this.shuffle(imgs)
+      this.nextPage(() => {
+        this.isFirst = false
+      })
+    },
     infiniteHandler ($state) {
       if (this.isFirst) {
         return
       }
-      console.log(`${this.goalImages.length} / ${this.images.length}`)
+      if (this.goalImages.length >= this.ximages.length) {
+        $state.complete()
+        return
+      }
+      console.log(`${this.goalImages.length} / ${this.ximages.length}`)
       this.nextPage(() => {
         if (this.allImages.length === 0) {
           $state.complete()
@@ -63,10 +75,13 @@ export default {
       })
     },
     nextPage (callback = null) {
+      if (this.goalImages.length >= this.ximages.length) {
+        return
+      }
       let ids = new Set(this.goalImages)
       this.allImages = this.allImages.filter(imgSrc => !ids.has(imgSrc))
       this.goalImages = [...this.goalImages, ...this.allImages.slice(0, this.perPage)];
-      this.msg = `${this.goalImages.length} / ${this.images.length}`;
+      this.msg = `${this.goalImages.length} / ${this.ximages.length}`;
       this.$nextTick(() => {
         $('#mygallery').justifiedGallery({
           rowHeight : 300,

@@ -33,16 +33,20 @@ export default {
   },
   mounted() {
     this.articles = require(`./data/${this.fileName}.json`)
+    let setImgs = new Set(tmpImages)
     this.articles.forEach(item => {
       try {
         let imgs = $(item.content_html).find('img')
         imgs.each((idx, elem) => {
           let m;
           if ((m = this.regex.exec(elem.src)) !== null) {
-            this.allImages.push(m[0])
+            setImgs.add(m[0])
           }
         })
       } catch (ignore) {}
+      finally {
+        this.allImages = Array.from(setImgs)
+      }
     })
   },
   methods: {

@@ -20,7 +20,15 @@ export default {
     }
   },
   created() {
-    this.importAll(require.context('./bai-viet/data/', true, /\.json$/))
+    fetch("/authors.json")
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+        }
+        this.fileNames = data
+      })
   },
   methods: {
     importAll(r) {

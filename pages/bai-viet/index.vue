@@ -30,7 +30,15 @@ export default {
   },
   created() {
     this.fileName = this.$route.query.fileName || ''
-    this.articles = require(`./data/${this.fileName}.json`)
+    fetch(`/data/${this.fileName}`)
+      .then(async response => {
+        const data = await response.json();
+        if (!response.ok) {
+          const error = (data && data.message) || response.statusText;
+          return Promise.reject(error);
+        }
+        this.articles = data
+      })
   },
   methods: {
     getAllImages(articles) {

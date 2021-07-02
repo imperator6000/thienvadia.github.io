@@ -25,15 +25,15 @@ export default {
     this.getImages()
   },
   methods: {
-    getImages () {
-      fetch(`/images.json`)
+    async getImages() {
+      await fetch(`/images.json`)
         .then(async response => {
           const data = await response.json();
           if (!response.ok) {
             const error = (data && data.message) || response.statusText;
             return Promise.reject(error);
           }
-          this.allImages = data.map(img => img.url)
+          this.allImages = data
           this.$refs.XGalleries.reset(this.allImages)
         })
     }

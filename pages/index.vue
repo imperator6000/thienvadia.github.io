@@ -2,11 +2,11 @@
   <b-container>
     <b-row>
       <b-col class="col-12">
-        <router-link class="btn btn-primary mt-1 mr-1" to="/images">All Images</router-link>
-        <router-link class="btn btn-success mt-1 mr-1"
-                   v-for="fileName in fileNames"
-                   :key="fileName"
-                   :to="{path: '/bai-viet', query: { fileName }}">{{ fileName }}</router-link>
+        <nuxt-link class="btn btn-primary mt-1 mr-1" to="/images">All Images</nuxt-link>
+        <nuxt-link class="btn btn-success mt-1 mr-1"
+                   v-for="item in fileNames"
+                   :key="item.file"
+                   :to="{path: '/bai-viet', query: { fileName: item.file }}">{{ item.text }} ( {{ item.total_imgs }} )</nuxt-link>
       </b-col>
     </b-row>
   </b-container>
@@ -27,7 +27,15 @@ export default {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
         }
-        this.fileNames = data
+        this.fileNames = data.sort((a, b) => {
+          if ( a.total_imgs > b.total_imgs ){
+            return -1;
+          }
+          if ( a.total_imgs < b.total_imgs ){
+            return 1;
+          }
+          return 0;
+        })
       })
   },
   methods: {

@@ -6,7 +6,7 @@
     <a v-else class="btn btn-primary" href="javascript:;" @click="showImages">Show Content</a>
 
     <div v-if="!isShowImages" v-for="article in articles" :key="article.uuid" v-html="article.content_html"></div>
-    <galleries v-else ref="myXGalleries" v-bind:images="allImages"></galleries>
+    <galleries v-if="isShowImages" ref="myXGalleries" v-bind:images="allImages"></galleries>
   </div>
 </template>
 
@@ -37,35 +37,13 @@ export default {
           const error = (data && data.message) || response.statusText;
           return Promise.reject(error);
         }
-        this.articles = data
+        this.articles = data.posts
+        this.allImages = data.images
       })
   },
   methods: {
-    getAllImages(articles) {
-      return new Promise(resolve => {
-        let setImgs = new Set()
-        articles.forEach(item => {
-          try {
-            let m;
-            while ((m = this.regex.exec(item.content_html)) !== null) {
-              setImgs.add(m[0])
-            }
-          } catch (ignore) {}
-        })
-        resolve(Array.from(setImgs))
-      })
-    },
     showImages () {
       this.isShowImages = !this.isShowImages
-      if (this.isShowImages) {
-        this.getAllImages(this.articles)
-          .then(images => {
-            this.allImages = images
-            this.$refs.myXGalleries.reset(this.allImages)
-          })
-      } else {
-        this.allImages = []
-      }
     }
   }
 }

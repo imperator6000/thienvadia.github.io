@@ -9,7 +9,6 @@
 import Galleries from '~/components/common/galleries'
 import Control from '~/components/common/control'
 
-
 export default {
   components: {
     Galleries,
